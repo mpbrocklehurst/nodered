@@ -1,0 +1,188 @@
+[
+    {
+        "id": "cad34e72b74c6a04",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "96514b706ce5f447",
+        "type": "tls-config",
+        "name": "AWSnoderedthing",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "nodered.cert.pem",
+        "keyname": "nodered.private.key",
+        "caname": "root-CA.crt",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "51db6a5e8d88eb49",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "a1l5r69bw9kgid-ats.iot.us-east-1.amazonaws.com",
+        "port": "8883",
+        "tls": "96514b706ce5f447",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "2bc7311f8ccd4402",
+        "type": "mqtt out",
+        "z": "cad34e72b74c6a04",
+        "name": "",
+        "topic": "pressure/data",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "51db6a5e8d88eb49",
+        "x": 500,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "7524d5b05b5d550b",
+        "type": "inject",
+        "z": "cad34e72b74c6a04",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 280,
+        "y": 200,
+        "wires": [
+            [
+                "d0cc343e765cc486"
+            ]
+        ]
+    },
+    {
+        "id": "d0cc343e765cc486",
+        "type": "function",
+        "z": "cad34e72b74c6a04",
+        "name": "",
+        "func": "function getRandomInt(max) {\n  return Math.floor(Math.random() * max);\n}\n\nvar sensorData = {};\nvar currentDate = new Date();\n\nsensorData[\"pressure\"]=getRandomInt(1024);\nsensorData[\"viscosity\"]=getRandomInt(1024);\nsensorData[\"sensordatetime\"]=currentDate.toISOString();\nsensorData[\"deviceid\"]=0;\nsensorData[\"clientid\"]=0;\n\nvar s=JSON.stringify(sensorData);\n\nmsg.payload=s;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 300,
+        "wires": [
+            [
+                "f332dc3ba7cdbf37",
+                "2bc7311f8ccd4402"
+            ]
+        ]
+    },
+    {
+        "id": "f332dc3ba7cdbf37",
+        "type": "debug",
+        "z": "cad34e72b74c6a04",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 610,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "e13a119c875781e2",
+        "type": "trigger",
+        "z": "cad34e72b74c6a04",
+        "name": "",
+        "op1": "1",
+        "op2": "0",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "-1",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "min",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 150,
+        "y": 400,
+        "wires": [
+            [
+                "d0cc343e765cc486"
+            ]
+        ]
+    },
+    {
+        "id": "68f531b7698763bc",
+        "type": "inject",
+        "z": "cad34e72b74c6a04",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 80,
+        "y": 220,
+        "wires": [
+            [
+                "e13a119c875781e2"
+            ]
+        ]
+    }
+]
